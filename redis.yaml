@@ -1,0 +1,127 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: redis-cluster-config
+  labels:
+    addonmanager.kubernetes.io/mode: Reconcile
+data:
+    redis-cluster.conf: |
+      # 节点端口
+      port 6379
+      # 开启集群模式
+      cluster-enabled yes
+      # 节点超时时间，单位毫秒
+      cluster-node-timeout 15000
+      # 集群内部配置文件
+      cluster-config-file "nodes.conf"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: redis-cluster
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: redis-cluster
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - endpoints
+    verbs:
+      - get
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: redis-cluster
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: redis-cluster
+subjects:
+- kind: ServiceAccount
+  name: redis-cluster
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: redis-cluster-ss
+  name: redis-cluster-ss
+spec:
+  clusterIP: None
+  ports:
+  - name: redis
+    port: 6379
+    targetPort: 6379
+  selector:
+    app: redis-cluster-ss
+
+---
+kind: StatefulSet
+apiVersion: apps/v1beta1
+metadata:
+  labels:
+    app: redis-cluster-ss
+  name: redis-cluster-ss
+spec:
+  replicas: 9
+  selector:
+    matchLabels:
+      app: redis-cluster-ss
+  serviceName: redis-cluster-ss
+  template:
+    metadata:
+      labels:
+        app: redis-cluster-ss
+    spec:
+      initContainers:
+      - name: init-sysctl
+        image: busybox:1.31.0
+        command: ['/bin/sh','-c','echo never > /sys/kernel/mm/transparent_hugepage/enabled && sysctl -w net.core.somaxconn=65535 && sleep 1']
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - mountPath: /sys
+          name: host-sys
+          readOnly: false
+      containers:
+      - args:
+        - -c
+        - redis-server /mnt/redis-cluster.conf
+        #- --loglevel verbose
+        command:
+        - sh
+        image: dotbalo/redis-trib:4.0.10
+        imagePullPolicy: IfNotPresent
+        name: redis-cluster
+        ports:
+        - containerPort: 6379
+          name: masterport
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /mnt/
+          name: config-volume
+          readOnly: false
+        - mountPath: /data/
+          name: cache-volume
+          readOnly: false
+      serviceAccountName: redis-cluster
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: host-sys
+        hostPath:
+          path: /sys
+      - name: cache-volume
+        emptyDir: {}
+      - configMap:
+          items:
+          - key: redis-cluster.conf
+            path: redis-cluster.conf
+          name: redis-cluster-config
+        name: config-volume
