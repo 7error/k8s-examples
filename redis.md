@@ -12,3 +12,8 @@ kubectl exec -ti redis-cluster-ss-0 -n default -- redis-cli cluster info
 
 kubectl run -it --rm --restart=Never --generator=run-pod/v1 --image=praqma/network-multitool pod-$RANDOM -- /bin/sh -c 'dig +noall +answer *.redis-cluster-ss.default.svc.cluster.local'
 ```
+
+
+https://github.com/dotbalo/k8s
+https://hub.helm.sh/charts/stable/redis
+https://adolphor.com/blog/2017/03/23/redis-cluster-node-manager.html
