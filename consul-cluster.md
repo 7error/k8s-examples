@@ -40,3 +40,4 @@ my-release-consul-2  172.20.119.24:8301   alive   server  1.6.0  2         dc1  
 
 * https://github.com/kelseyhightower/consul-on-kubernetes
 * https://github.com/bitnami/bitnami-docker-consul
+* https://hub.helm.sh/charts/bitnami/consul
