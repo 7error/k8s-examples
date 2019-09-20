@@ -19,3 +19,4 @@ kubectl -n default exec -it my-release-consul-0 -- /bin/sh -c "consul operator r
 ```
 
 * https://github.com/kelseyhightower/consul-on-kubernetes
+* https://github.com/bitnami/bitnami-docker-consul
