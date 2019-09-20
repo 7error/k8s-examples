@@ -115,7 +115,7 @@ spec:
                   - "consul"
       containers:
       - name: consul
-        image: "docker.io/bitnami/consul:1.6.1-debian-9-r0"
+        image: "bitnami/consul:1.6.1-debian-9-r9"
         imagePullPolicy: "IfNotPresent"
         ports:
         - name: http
