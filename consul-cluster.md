@@ -18,22 +18,22 @@ kubectl -n default logs my-release-consul-0
 kubectl -n default exec -it my-release-consul-0 -- /bin/sh -c "consul operator raft list-peers"
 
 
-Node                 ID                                    Address             State     Voter  RaftProtocol
-my-release-consul-0  2bd192ac-c3a3-6207-6844-b7aa2b3edf1d  172.20.76.245:8300  follower  true   3
-my-release-consul-1  bfc8bbc9-e32a-016b-e893-dc1ff1c3c807  172.20.2.149:8300   follower  true   3
-my-release-consul-2  7cdba994-c0fd-f0e8-d912-78d84ca66f94  172.20.119.24:8300  leader    true   3
+Node           ID                                    Address             State     Voter  RaftProtocol
+172.20.76.250  0461ce46-7372-87de-f517-9d251d0fc3ac  172.20.76.250:8300  leader    true   3
+172.20.2.161   21272504-4c2d-ef41-2f46-ae94abef37fb  172.20.2.161:8300   follower  true   3
+172.20.119.37  5486498d-dd56-7258-3002-249941224a24  172.20.119.37:8300  follower  true   3
 
 
 kubectl -n default exec -it my-release-consul-0 -- /bin/sh -c "consul members"
 
 Node                 Address              Status  Type    Build  Protocol  DC   Segment
-my-release-consul-0  172.20.76.245:8301   alive   server  1.6.0  2         dc1  <all>
-my-release-consul-1  172.20.2.149:8301    alive   server  1.6.0  2         dc1  <all>
-my-release-consul-2  172.20.119.24:8301   alive   server  1.6.0  2         dc1  <all>
-172.20.119.34        172.20.119.34:8301   alive   client  1.6.1  2         dc1  <default>
-172.20.123.137       172.20.123.137:8301  alive   client  1.6.1  2         dc1  <default>
-172.20.2.159         172.20.2.159:8301    alive   client  1.6.1  2         dc1  <default>
-172.20.76.234        172.20.76.234:8301   alive   client  1.6.1  2         dc1  <default>
+172.20.119.37   172.20.119.37:8301   alive   server  1.6.1  2         dc1  <all>
+172.20.2.161    172.20.2.161:8301    alive   server  1.6.1  2         dc1  <all>
+172.20.76.250   172.20.76.250:8301   alive   server  1.6.1  2         dc1  <all>
+172.20.119.38   172.20.119.38:8301   alive   client  1.6.1  2         dc1  <default>
+172.20.123.138  172.20.123.138:8301  alive   client  1.6.1  2         dc1  <default>
+172.20.2.162    172.20.2.162:8301    alive   client  1.6.1  2         dc1  <default>
+172.20.76.252   172.20.76.252:8301   alive   client  1.6.1  2         dc1  <default>
 
 
 ```
