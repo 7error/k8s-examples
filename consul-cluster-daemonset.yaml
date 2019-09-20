@@ -48,7 +48,7 @@ spec:
         runAsUser: 1001
       containers:
       - name: consul
-        image: "docker.io/bitnami/consul:1.6.0-debian-9-r7"
+        image: "docker.io/bitnami/consul:1.6.1-debian-9-r8"
         imagePullPolicy: "IfNotPresent"
         ports:
         - name: http
@@ -74,7 +74,7 @@ spec:
         env:
         - name: CONSUL_AGENT_MODE
           value: "client"
-        - name: CONSUL_RETRY_JOIN
+        - name: CONSUL_RETRY_JOIN_ADDRESS
           value: "my-release-consul-0.my-release-consul.default.svc"
         - name: CONSUL_DISABLE_KEYRING_FILE
           value: "true"
@@ -82,12 +82,8 @@ spec:
           value: "dc1"
         - name: CONSUL_UI
           value: "true"
-        - name: CONSUL_DNS_PORT_NUMBER
-          value: "8600"
-        - name: CONSUL_RPC_PORT_NUMBER
-          value: "8300"
-        - name: CONSUL_SERF_LAN_PORT_NUMBER
-          value: "8301"
+        - name: CONSUL_BOOTSTRAP_EXPECT
+          value: "0"
         lifecycle:
           preStop:
             exec:
