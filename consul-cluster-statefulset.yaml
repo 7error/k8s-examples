@@ -1,12 +1,11 @@
 ---
-# Source: consul/templates/pod-dist-budget.yaml
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: "my-release-consul-pdb"
   labels:
     app: "consul"
-    chart: consul-5.3.5
+    chart: consul-5.3.6
     release: "my-release"
     heritage: "Tiller"
 spec:
@@ -15,16 +14,15 @@ spec:
     matchLabels:
       heritage: "Tiller"
       release: "my-release"
-      chart: consul-5.3.5
+      chart: consul-5.3.6
 ---
-# Source: consul/templates/consul-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: "my-release-consul"
   labels:
     app: "consul"
-    chart: consul-5.3.5
+    chart: consul-5.3.6
     release: "my-release"
     heritage: "Tiller"
   annotations:
@@ -51,14 +49,13 @@ spec:
     app: "consul"
     release: "my-release"
 ---
-# Source: consul/templates/ui-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: "my-release-consul-ui"
   labels:
     app: "consul"
-    chart: consul-5.3.5
+    chart: consul-5.3.6
     release: "my-release"
     heritage: "Tiller"
     component: ui
@@ -70,18 +67,17 @@ spec:
   type: "ClusterIP"
   selector:
     app: "consul"
-    chart: consul-5.3.5
+    chart: consul-5.3.6
     release: "my-release"
     heritage: "Tiller"
 ---
-# Source: consul/templates/statefulset.yaml
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   name: "my-release-consul"
   labels:
     app: "consul"
-    chart: consul-5.3.5
+    chart: consul-5.3.6
     release: "my-release"
     heritage: "Tiller"
 spec:
@@ -98,7 +94,7 @@ spec:
       name: "my-release-consul"
       labels:
         app: "consul"
-        chart: consul-5.3.5
+        chart: consul-5.3.6
         release: "my-release"
         heritage: "Tiller"
     spec:
@@ -119,7 +115,7 @@ spec:
                   - "consul"
       containers:
       - name: consul
-        image: "docker.io/bitnami/consul:1.6.0-debian-9-r7"
+        image: "docker.io/bitnami/consul:1.6.1-debian-9-r0"
         imagePullPolicy: "IfNotPresent"
         ports:
         - name: http
@@ -206,6 +202,7 @@ spec:
       volumes:
       - name: cache-volume
         emptyDir: {}
+      
       
   #volumeClaimTemplates:
   #  - metadata:
