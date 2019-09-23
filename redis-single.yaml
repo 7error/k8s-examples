@@ -156,13 +156,16 @@ spec:
       initContainers:
       - name: init-sysctl
         image: busybox:1.31.0
-        command: ["sh", "-c", "chown -R 1001:1001 /data && sysctl -w net.core.somaxconn=10000 && echo never > /sys/kernel/mm/transparent_hugepage/enabled && sleep 1"]
+        command: ["sh", "-c", "mkdir -p /host-root/data/redis-data/ && chown -R 1001:1001 /data && sysctl -w net.core.somaxconn=10000 && echo never > /sys/kernel/mm/transparent_hugepage/enabled && sleep 1"]
         volumeMounts:
         - name: redis-data
           mountPath: /data
         - name: host-sys
           mountPath: /sys
-          readOnly: false  
+          readOnly: false
+        - name: host-root
+          mountPath: /host-root
+          readOnly: false
         securityContext:
           privileged: true
           runAsUser: 0
@@ -240,6 +243,9 @@ spec:
           path: /data/redis-data
       - name: redis-tmp-conf
         emptyDir: {}
+      - name: host-root
+        hostPath:
+          path: /
       - name: host-sys
         hostPath:
           path: /sys
