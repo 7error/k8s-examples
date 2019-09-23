@@ -3,6 +3,13 @@
 # simple use nodeSelector and hostPath
 kubectl apply -f https://raw.githubusercontent.com/7error/watch/master/redis-single.yaml
 
+or
+
+curl -fsSL https://raw.githubusercontent.com/7error/watch/master/redis-single.yaml \
+| sed -e "s/n32.dev/yournode/g" \
+| sed -e "s/release11/my-release/g" \
+| kubectl apply -f -
+
 kubectl get cm,svc,ep,po -l app=redis -l release=release11
 
 
