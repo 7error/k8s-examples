@@ -8,9 +8,13 @@ kubectl run -it --rm --restart=Never --generator=run-pod/v1 \
 -- redis-trib.rb create --replicas 1 $(kubectl get pod -l app=redis-cluster-ss -o json | jq -r '[(.items[].status.podIP)+":6379"] | join(" ")')
 
 
-kubectl exec -it redis-cluster-ss-0 -n default -- redis-cli cluster nodes
+kubectl run -it --rm --restart=Never --generator=run-pod/v1 \
+--image=dotbalo/redis-trib:4.0.10 pod-$RANDOM \
+-- redis-cli -h redis-cluster-ss-0.redis-cluster-ss.default.svc.cluster.local cluster nodes
 
-kubectl exec -it redis-cluster-ss-0 -n default -- redis-cli cluster info
+kubectl run -it --rm --restart=Never --generator=run-pod/v1 \
+--image=dotbalo/redis-trib:4.0.10 pod-$RANDOM \
+-- redis-cli -h redis-cluster-ss-0.redis-cluster-ss.default.svc.cluster.local cluster info
 
 
 kubectl run -it --rm --restart=Never --generator=run-pod/v1 \
