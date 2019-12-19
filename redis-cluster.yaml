@@ -65,7 +65,7 @@ metadata:
     app: redis-cluster-ss
   name: redis-cluster-ss
 spec:
-  replicas: 9
+  replicas: 6
   selector:
     matchLabels:
       app: redis-cluster-ss
@@ -93,7 +93,7 @@ spec:
         #- --loglevel verbose
         command:
         - sh
-        image: dotbalo/redis-trib:4.0.10
+        image: redis:4.0.14
         imagePullPolicy: IfNotPresent
         name: redis-cluster
         ports:
