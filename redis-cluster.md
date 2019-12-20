@@ -5,7 +5,15 @@ kubectl get sts,pod,svc -o wide -l app=redis-cluster-ss
 
 kubectl run -it --rm --restart=Never --generator=run-pod/v1 \
 --image=dotbalo/redis-trib:4.0.10 pod-$RANDOM \
--- redis-trib.rb create --replicas 1 $(kubectl get pod -l app=redis-cluster-ss -o json | jq -r '[(.items[].status.podIP)+":6379"] | join(" ")')
+-- redis-trib.rb create --replicas 1 \
+$(kubectl get pod -l app=redis-cluster-ss -o json | jq -r '[(.items[].status.podIP)+":6379"] | join(" ")')
+
+or
+
+kubectl run -it --rm --restart=Never --generator=run-pod/v1 \
+--image=dotbalo/redis-trib:4.0.10 pod-$RANDOM \
+-- redis-trib.rb create --replicas 1 \
+$(kubectl run -it --rm --restart=Never --generator=run-pod/v1 --image=7error/kkkbox pod-$RANDOM --quiet -- /bin/sh -c "dig +short *.redis-cluster-ss.default.svc.cluster.local |awk 'BEGIN {ORS=\":6379 \"} {print}'");
 
 
 kubectl run -it --rm --restart=Never --generator=run-pod/v1 \
