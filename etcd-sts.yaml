@@ -5,7 +5,7 @@ metadata:
   name: demo-etcd-scripts
   labels:
     app.kubernetes.io/name: etcd
-    helm.sh/chart: etcd-4.7.1
+    helm.sh/chart: etcd-4.7.3
     app.kubernetes.io/instance: demo
     app.kubernetes.io/managed-by: Tiller
 data:
@@ -175,7 +175,7 @@ metadata:
   name: demo-etcd-headless
   labels:
     app.kubernetes.io/name: etcd
-    helm.sh/chart: etcd-4.7.1
+    helm.sh/chart: etcd-4.7.3
     app.kubernetes.io/instance: demo
     app.kubernetes.io/managed-by: Tiller
   annotations:
@@ -200,7 +200,7 @@ metadata:
   name: demo-etcd
   labels:
     app.kubernetes.io/name: etcd
-    helm.sh/chart: etcd-4.7.1
+    helm.sh/chart: etcd-4.7.3
     app.kubernetes.io/instance: demo
     app.kubernetes.io/managed-by: Tiller
 spec:
@@ -224,7 +224,7 @@ metadata:
   name: demo-etcd
   labels:
     app.kubernetes.io/name: etcd
-    helm.sh/chart: etcd-4.7.1
+    helm.sh/chart: etcd-4.7.3
     app.kubernetes.io/instance: demo
     app.kubernetes.io/managed-by: Tiller
 spec:
@@ -241,17 +241,17 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: etcd
-        helm.sh/chart: etcd-4.7.1
+        helm.sh/chart: etcd-4.7.3
         app.kubernetes.io/instance: demo
         app.kubernetes.io/managed-by: Tiller
-    spec:      
+    spec:
       securityContext:
         fsGroup: 1001
         runAsUser: 1001
       containers:
         # Variables to populate static cluster
         - name: etcd
-          image: dockerhub.azk8s.cn/bitnami/etcd:3.4.5
+          image: docker.io/bitnami/etcd:3.4.7
           imagePullPolicy: "IfNotPresent"
           command:
             - /scripts/setup.sh
@@ -263,7 +263,7 @@ spec:
           resources:
             limits: {}
             requests: {}
-            
+
           env:
             - name: BITNAMI_DEBUG
               value: "false"
@@ -302,6 +302,24 @@ spec:
               containerPort: 2379
             - name: peer
               containerPort: 2380
+          livenessProbe:
+            exec:
+              command:
+                - /scripts/probes.sh
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 5
+          readinessProbe:
+            exec:
+              command:
+                - /scripts/probes.sh
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 5
           volumeMounts:
             - name: scripts
               mountPath: /scripts/setup.sh
