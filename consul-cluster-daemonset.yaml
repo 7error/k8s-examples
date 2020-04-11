@@ -49,7 +49,8 @@ spec:
         runAsUser: 1001
       containers:
       - name: consul
-        image: "dockerhub.azk8s.cn/bitnami/consul:1.7.1"
+        #image: "dockerhub.azk8s.cn/bitnami/consul:1.7.1"
+        image: "bitnami/consul:1.7.1"
         imagePullPolicy: "IfNotPresent"
         ports:
         - name: http
