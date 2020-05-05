@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>consul-docker.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Base16 Atelier Estuary Dark - Theme */
+/* by Bram de Haan (http://atelierbram.github.io/syntax-highlighting/atelier-schemes/estuary) */
+/* Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16) */
+
+/* Atelier-Estuary Comment */
+.hljs-comment,
+.hljs-quote {
+  color: #878573;
+}
+
+/* Atelier-Estuary Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-attribute,
+.hljs-tag,
+.hljs-name,
+.hljs-regexp,
+.hljs-link,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class {
+  color: #ba6236;
+}
+
+/* Atelier-Estuary Orange */
+.hljs-number,
+.hljs-meta,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params {
+  color: #ae7313;
+}
+
+/* Atelier-Estuary Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet {
+  color: #7d9726;
+}
+
+/* Atelier-Estuary Blue */
+.hljs-title,
+.hljs-section {
+  color: #36a166;
+}
+
+/* Atelier-Estuary Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+  color: #5f9182;
+}
+
+.hljs-deletion,
+.hljs-addition {
+  color: #22221b;
+  display: inline-block;
+  width: 100%;
+}
+
+.hljs-deletion {
+  background-color: #ba6236;
+}
+
+.hljs-addition {
+  background-color: #7d9726;
+}
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  background: #22221b;
+  color: #929181;
+  padding: 0.5em;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="1-%E7%94%9F%E6%88%90%E4%B8%AA-encrypt">1 生成个 encrypt</h1>
+<pre class="hljs"><code><div>docker run -it --rm consul:1.7.2 keygen
+</div></code></pre>
+<h1 id="2-server%E8%8A%82%E7%82%B9">2 server节点</h1>
+<h2 id="21-%E9%85%8D%E7%BD%AE">2.1 配置</h2>
+<pre class="hljs"><code><div>mkdir -p consul/{data,consul.d}
+chown -R 100:1000 consul/data
+</div></code></pre>
+<pre class="hljs"><code><div>cat &gt;$(<span class="hljs-built_in">pwd</span>)/consul/consul.d/config.json &lt;&lt;EOL
+{
+  <span class="hljs-string">"bootstrap_expect"</span>: 3,
+  <span class="hljs-string">"server"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-string">"client_addr"</span>: <span class="hljs-string">"0.0.0.0"</span>,
+  <span class="hljs-string">"datacenter"</span>: <span class="hljs-string">"dc1"</span>,
+  <span class="hljs-string">"data_dir"</span>: <span class="hljs-string">"/data"</span>,
+  <span class="hljs-string">"dns_config"</span>: {
+    <span class="hljs-string">"enable_truncate"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-string">"only_passing"</span>: <span class="hljs-literal">true</span>
+  },
+  <span class="hljs-string">"encrypt"</span>: <span class="hljs-string">"DXv9e2TI0QNB2azasK6IA3prkuOMapnKs4rSWvVjmg4="</span>,
+  <span class="hljs-string">"leave_on_terminate"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-string">"rejoin_after_leave"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-string">"ui"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-string">"enable_debug"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-string">"retry_join"</span>: [
+    <span class="hljs-string">"192.168.122.33"</span>,
+    <span class="hljs-string">"192.168.122.34"</span>,
+    <span class="hljs-string">"192.168.122.35"</span>
+  ],
+  <span class="hljs-string">"retry_interval"</span>: <span class="hljs-string">"30s"</span>,
+  <span class="hljs-string">"start_join"</span>: [
+    <span class="hljs-string">"192.168.122.33"</span>,
+    <span class="hljs-string">"192.168.122.34"</span>,
+    <span class="hljs-string">"192.168.122.35"</span>
+  ],
+  <span class="hljs-string">"disable_update_check"</span>: <span class="hljs-literal">true</span>
+}
+EOL
+
+</div></code></pre>
+<h2 id="22-%E5%90%AF%E5%8A%A8">2.2 启动</h2>
+<pre class="hljs"><code><div>docker run -d --restart always --name=consul --net=host \
+-v $(<span class="hljs-built_in">pwd</span>)/consul/data:/data \
+-v $(<span class="hljs-built_in">pwd</span>)/consul/consul.d:/etc/consul.d/ \
+consul:1.7.2 consul agent -config-dir /etc/consul.d/ -<span class="hljs-built_in">bind</span>=192.168.122.33 -node=<span class="hljs-string">"n33"</span>
+</div></code></pre>
+<pre class="hljs"><code><div>docker run -d --restart always --name=consul --net=host \
+-v $(<span class="hljs-built_in">pwd</span>)/consul/data:/data \
+-v $(<span class="hljs-built_in">pwd</span>)/consul/consul.d:/etc/consul.d/ \
+consul:1.7.2 consul agent -config-dir /etc/consul.d/ -<span class="hljs-built_in">bind</span>=192.168.122.34 -node=<span class="hljs-string">"n34"</span>
+</div></code></pre>
+<pre class="hljs"><code><div>docker run -d --restart always --name=consul --net=host \
+-v $(<span class="hljs-built_in">pwd</span>)/consul/data:/data \
+-v $(<span class="hljs-built_in">pwd</span>)/consul/consul.d:/etc/consul.d/ \
+consul:1.7.2 consul agent -config-dir /etc/consul.d/ -<span class="hljs-built_in">bind</span>=192.168.122.35 -node=<span class="hljs-string">"n35"</span>
+</div></code></pre>
+<h1 id="3-client%E8%8A%82%E7%82%B9">3 client节点</h1>
+<pre class="hljs"><code><div>mkdir -p /tmp/consul
+</div></code></pre>
+<pre class="hljs"><code><div>docker run -d --restart always --name=consul --net=host \
+-v $(<span class="hljs-built_in">pwd</span>)/consul-data1:/tmp/consul \
+consul:1.7.2 consul agent \
+-data-dir=<span class="hljs-string">"/tmp/consul"</span> \
+-encrypt=<span class="hljs-string">"DXv9e2TI0QNB2azasK6IA3prkuOMapnKs4rSWvVjmg4="</span> \
+-retry-join=192.168.122.33 \
+-retry-join=192.168.122.34 \
+-retry-join=192.168.122.35 \
+-retry-interval=10s \
+-datacenter=<span class="hljs-string">"dc1"</span> \
+-server=<span class="hljs-literal">false</span> \
+-<span class="hljs-built_in">log</span>-level=<span class="hljs-string">"DEBUG"</span> \
+-client=0.0.0.0 \
+-<span class="hljs-built_in">bind</span>=192.168.122.38
+<span class="hljs-comment">#-node="n38"</span>
+</div></code></pre>
+<pre class="hljs"><code><div>Consul v1.7.2
+Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol &gt;2 when speaking to compatible agents)
+Consul v1.7.2
+Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol &gt;2 when speaking to compatible agents)
+Consul v1.7.2
+Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol &gt;2 when speaking to compatible agents)
+Consul v1.7.2
+Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol &gt;2 when speaking to compatible agents)
+Consul v1.7.2
+Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol &gt;2 when speaking to compatible agents)
+Consul v1.7.2
+Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol &gt;2 when speaking to compatible agents)
+Consul v1.7.2
+Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol &gt;2 when speaking to compatible agents)
+Consul v1.7.2
+Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol &gt;2 when speaking to compatible agents)
+Consul v1.7.2
+Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol &gt;2 when speaking to compatible agents)
+</div></code></pre>
+<h1 id="4-%E6%B5%8B%E8%AF%95">4 测试</h1>
+<pre class="hljs"><code><div>docker <span class="hljs-built_in">exec</span> -it consul sh -c <span class="hljs-string">"consul members"</span>
+docker <span class="hljs-built_in">exec</span> -it consul sh -c <span class="hljs-string">"consul operator raft list-peers"</span>
+docker <span class="hljs-built_in">exec</span> -it consul sh -c <span class="hljs-string">"consul catalog nodes"</span>
+docker <span class="hljs-built_in">exec</span> -it consul sh -c <span class="hljs-string">"consul catalog services"</span>
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># register service</span>
+<span class="hljs-comment">## 服务dns1，业务正常，带健康检测</span>
+curl -X PUT -d <span class="hljs-string">'{"id": "dns1","name": "dns","address": "8.8.4.4","port": 53,"tags": ["dev"],"checks": [{"tcp": "8.8.4.4:53","interval": "10s","timeout": "5s","deregisterCriticalServiceAfter": "360m"}]}'</span> http://192.168.122.38:8500/v1/agent/service/register?replace-existing-checks=<span class="hljs-literal">true</span>
+
+<span class="hljs-comment">## 服务dns2，业务正常，带健康检测</span>
+curl -X PUT -d <span class="hljs-string">'{"id": "dns2","name": "dns","address": "8.8.8.8","port": 53,"tags": ["dev"],"checks": [{"tcp": "8.8.8.8:53","interval": "10s","timeout": "5s","deregisterCriticalServiceAfter": "360m"}]}'</span> http://192.168.122.38:8500/v1/agent/service/register?replace-existing-checks=<span class="hljs-literal">true</span>
+
+<span class="hljs-comment">## 服务dns3，业务异常，带健康检测，1m后反注册</span>
+curl -X PUT -d <span class="hljs-string">'{"id": "dns3","name": "dns","address": "8.8.1.1","port": 53,"tags": ["dev"],"checks": [{"tcp": "8.8.1.1:53","interval": "10s","timeout": "5s","deregisterCriticalServiceAfter": "22m"}]}'</span> http://192.168.122.38:8500/v1/agent/service/register?replace-existing-checks=<span class="hljs-literal">true</span>
+
+<span class="hljs-comment">## 服务dns4，业务异常，不带健康检测</span>
+curl -X PUT -d <span class="hljs-string">'{"id": "dns4","name": "dns","address": "8.8.2.2","port": 53,"tags": ["dev"]}'</span> http://192.168.122.38:8500/v1/agent/service/register?replace-existing-checks=<span class="hljs-literal">true</span>
+
+
+curl -X PUT -d <span class="hljs-string">'{"id": "dns5","name": "dns","address": "8.8.1.1","port": 53,"tags": ["dev"],"checks": [{"http": "192.168.1.1:80","interval": "10s","timeout": "5s","deregisterCriticalServiceAfter": "22m"}]}'</span> http://192.168.122.38:8500/v1/agent/service/register?replace-existing-checks=<span class="hljs-literal">true</span>
+
+
+<span class="hljs-comment"># find service</span>
+
+curl -s -XGET http://192.168.122.33:8500/v1/catalog/service/dns | python -mjson.tool
+curl -s -XGET http://192.168.122.33:8500/v1/catalog/service/dns --data-urlencode <span class="hljs-string">'filter=ServiceID == dns1'</span> |python -mjson.tool
+curl -s -XGET http://192.168.122.33:8500/v1/health/service/dns?passing=<span class="hljs-literal">true</span> | python -mjson.tool
+
+
+curl -s -XGET http://192.168.122.38:8500/v1/agent/service/dns1 | python -mjson.tool
+curl -s -XGET http://192.168.122.38:8500/v1/agent/health/service/id/dns1 | python -mjson.tool
+
+
+<span class="hljs-comment"># deregister service</span>
+curl -X PUT http://192.168.122.38:8500/v1/agent/service/deregister/dns1
+curl -X PUT http://192.168.122.38:8500/v1/agent/service/deregister/dns2
+curl -X PUT http://192.168.122.38:8500/v1/agent/service/deregister/dns3
+curl -X PUT http://192.168.122.38:8500/v1/agent/service/deregister/dns4
+</div></code></pre>
+
+</body>
+</html>
