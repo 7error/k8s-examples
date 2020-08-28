@@ -69,26 +69,48 @@ consul:1.8.3 consul agent -config-dir /etc/consul.d/ -bind=192.168.122.35 -node=
 ```
 
 # 3 client节点
+## 3.1 配置
 ```sh
-mkdir -p /tmp/consul
+mkdir -p consul/{data,consul.d}
+chown -R 100:1000 consul/data
 ```
-
+```sh
+cat >$(pwd)/consul/consul.d/config.json <<EOL
+{
+  "server": false,
+  "client_addr": "0.0.0.0",
+  "datacenter": "dc1",
+  "data_dir": "/data",
+  "dns_config": {
+    "enable_truncate": true,
+    "only_passing": true
+  },
+  "encrypt": "DXv9e2TI0QNB2azasK6IA3prkuOMapnKs4rSWvVjmg4=",
+  "leave_on_terminate": true,
+  "rejoin_after_leave": true,
+  "ui": true,
+  "enable_debug": false,
+  "retry_join": [
+    "192.168.122.33",
+    "192.168.122.34",
+    "192.168.122.35"
+  ],
+  "retry_interval": "30s",
+  "start_join": [
+    "192.168.122.33",
+    "192.168.122.34",
+    "192.168.122.35"
+  ],
+  "disable_update_check": true
+}
+EOL
+```
+## 3.2 启动
 ```sh
 docker run -d --restart always --name=consul --net=host \
--v $(pwd)/consul-data1:/tmp/consul \
-consul:1.8.3 consul agent \
--data-dir="/tmp/consul" \
--encrypt="DXv9e2TI0QNB2azasK6IA3prkuOMapnKs4rSWvVjmg4=" \
--retry-join=192.168.122.33 \
--retry-join=192.168.122.34 \
--retry-join=192.168.122.35 \
--retry-interval=10s \
--datacenter="dc1" \
--server=false \
--log-level="DEBUG" \
--client=0.0.0.0 \
--bind=192.168.122.38 \
--node="n38"
+-v $(pwd)/consul/data:/data \
+-v $(pwd)/consul/consul.d:/etc/consul.d/ \
+consul:1.8.3 consul agent -config-dir /etc/consul.d/ -bind=192.168.122.38 -node="n38"
 ```
 
 # 4 测试
