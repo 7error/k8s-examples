@@ -3,7 +3,7 @@
 # 1 生成个 encrypt
 
 ```sh
-docker run -it --rm consul:1.7.2 keygen
+docker run -it --rm consul:1.8.3 keygen
 ```
 
 # 2 server节点
@@ -53,19 +53,19 @@ EOL
 docker run -d --restart always --name=consul --net=host \
 -v $(pwd)/consul/data:/data \
 -v $(pwd)/consul/consul.d:/etc/consul.d/ \
-consul:1.7.2 consul agent -config-dir /etc/consul.d/ -bind=192.168.122.33 -node="n33"
+consul:1.8.3 consul agent -config-dir /etc/consul.d/ -bind=192.168.122.33 -node="n33"
 ```
 ```sh
 docker run -d --restart always --name=consul --net=host \
 -v $(pwd)/consul/data:/data \
 -v $(pwd)/consul/consul.d:/etc/consul.d/ \
-consul:1.7.2 consul agent -config-dir /etc/consul.d/ -bind=192.168.122.34 -node="n34"
+consul:1.8.3 consul agent -config-dir /etc/consul.d/ -bind=192.168.122.34 -node="n34"
 ```
 ```sh
 docker run -d --restart always --name=consul --net=host \
 -v $(pwd)/consul/data:/data \
 -v $(pwd)/consul/consul.d:/etc/consul.d/ \
-consul:1.7.2 consul agent -config-dir /etc/consul.d/ -bind=192.168.122.35 -node="n35"
+consul:1.8.3 consul agent -config-dir /etc/consul.d/ -bind=192.168.122.35 -node="n35"
 ```
 
 # 3 client节点
@@ -76,7 +76,7 @@ mkdir -p /tmp/consul
 ```sh
 docker run -d --restart always --name=consul --net=host \
 -v $(pwd)/consul-data1:/tmp/consul \
-consul:1.7.2 consul agent \
+consul:1.8.3 consul agent \
 -data-dir="/tmp/consul" \
 -encrypt="DXv9e2TI0QNB2azasK6IA3prkuOMapnKs4rSWvVjmg4=" \
 -retry-join=192.168.122.33 \
@@ -87,31 +87,9 @@ consul:1.7.2 consul agent \
 -server=false \
 -log-level="DEBUG" \
 -client=0.0.0.0 \
--bind=192.168.122.38
-#-node="n38"
+-bind=192.168.122.38 \
+-node="n38"
 ```
-
-```bash
-Consul v1.7.2
-Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol >2 when speaking to compatible agents)
-Consul v1.7.2
-Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol >2 when speaking to compatible agents)
-Consul v1.7.2
-Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol >2 when speaking to compatible agents)
-Consul v1.7.2
-Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol >2 when speaking to compatible agents)
-Consul v1.7.2
-Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol >2 when speaking to compatible agents)
-Consul v1.7.2
-Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol >2 when speaking to compatible agents)
-Consul v1.7.2
-Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol >2 when speaking to compatible agents)
-Consul v1.7.2
-Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol >2 when speaking to compatible agents)
-Consul v1.7.2
-Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol >2 when speaking to compatible agents)
-```
-
 
 # 4 测试
 
