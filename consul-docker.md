@@ -1,6 +1,17 @@
+# 1 准备
+## 1.1
+|  机器    |  ip                |  角色             |
+| ----    | ----               | ----              |
+|   n33   |  192.168.122.33    | consul server     |
+|   n34   |  192.168.122.34    | consul server     |
+|   n35   |  192.168.122.35    | consul server     |
+|   n38   |  192.168.122.38    | consul client     |
 
 
-# 1 生成个 encrypt
+每台机器都安装好docker
+
+
+## 1.2 生成个 encrypt
 
 ```sh
 docker run -it --rm consul:1.8.3 keygen
