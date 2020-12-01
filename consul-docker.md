@@ -14,7 +14,7 @@
 ## 1.2 生成个 encrypt
 
 ```sh
-docker run -it --rm consul:1.8.3 keygen
+docker run -it --rm consul:1.8.6 keygen
 ```
 
 # 2 server节点
@@ -64,19 +64,19 @@ EOL
 docker run -d --restart always --name=consul --net=host \
 -v $(pwd)/consul/data:/data \
 -v $(pwd)/consul/consul.d:/etc/consul.d/ \
-consul:1.8.3 consul agent -config-dir /etc/consul.d/ -bind=192.168.122.33 -node="n33"
+consul:1.8.6 consul agent -config-dir /etc/consul.d/ -bind=192.168.122.33 -node="n33"
 ```
 ```sh
 docker run -d --restart always --name=consul --net=host \
 -v $(pwd)/consul/data:/data \
 -v $(pwd)/consul/consul.d:/etc/consul.d/ \
-consul:1.8.3 consul agent -config-dir /etc/consul.d/ -bind=192.168.122.34 -node="n34"
+consul:1.8.6 consul agent -config-dir /etc/consul.d/ -bind=192.168.122.34 -node="n34"
 ```
 ```sh
 docker run -d --restart always --name=consul --net=host \
 -v $(pwd)/consul/data:/data \
 -v $(pwd)/consul/consul.d:/etc/consul.d/ \
-consul:1.8.3 consul agent -config-dir /etc/consul.d/ -bind=192.168.122.35 -node="n35"
+consul:1.8.6 consul agent -config-dir /etc/consul.d/ -bind=192.168.122.35 -node="n35"
 ```
 
 # 3 client节点
@@ -121,7 +121,7 @@ EOL
 docker run -d --restart always --name=consul --net=host \
 -v $(pwd)/consul/data:/data \
 -v $(pwd)/consul/consul.d:/etc/consul.d/ \
-consul:1.8.3 consul agent -config-dir /etc/consul.d/ -bind=192.168.122.38 -node="n38"
+consul:1.8.6 consul agent -config-dir /etc/consul.d/ -bind=192.168.122.38 -node="n38"
 ```
 
 # 4 测试
