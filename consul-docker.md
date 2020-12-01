@@ -16,6 +16,7 @@
 ```sh
 docker run -it --rm consul:1.8.6 keygen
 ```
+把生成的encrypt替换下边config.json文件中的DXv9e2TI0QNB2azasK6IA3prkuOMapnKs4rSWvVjmg4=
 
 # 2 server节点
 
