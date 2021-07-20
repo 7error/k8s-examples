@@ -1,0 +1,105 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: consul-ds-config
+  labels:
+    addonmanager.kubernetes.io/mode: Reconcile
+data:
+  consul.json: |-
+      {
+        "server": false,
+        "client_addr": "0.0.0.0",
+        "data_dir": "/bitnami/consul/data",
+        "dns_config": {
+          "enable_truncate": true,
+          "only_passing": true
+        },
+        "leave_on_terminate": true,
+        "rejoin_after_leave": true,
+        "ui": true,
+        "enable_debug": false,
+        "retry_join": [
+          "my-release-consul-0.my-release-consul.default.svc",
+          "my-release-consul-1.my-release-consul.default.svc",
+          "my-release-consul-2.my-release-consul.default.svc"
+        ],
+        "retry_interval": "10s"
+        "disable_update_check": true
+      }
+---
+#apiVersion: extensions/v1beta1
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: "consul-ds"
+  labels:
+    app: "consul-ds"
+spec:
+  selector:
+    matchLabels:
+      app: consul-ds
+  template:
+    metadata:
+      name: "consul-ds"
+      labels:
+        app: "consul-ds"
+    spec:
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      containers:
+      - name: consul
+        #image: "dockerhub.azk8s.cn/bitnami/consul:1.7.1"
+        image: "docker.io/bitnami/consul:1.7.1"
+        imagePullPolicy: "IfNotPresent"
+        ports:
+        - name: http
+          containerPort: 8500
+        - name: rpc
+          containerPort: 8400
+        - name: serflan-tcp
+          protocol: "TCP"
+          containerPort: 8301
+        - name: serflan-udp
+          protocol: "UDP"
+          containerPort: 8301
+        - name: server
+          containerPort: 8300
+        - name: consuldns-tcp
+          containerPort: 8600
+        - name: consuldns-udp
+          protocol: "UDP"
+          containerPort: 8600
+        resources:
+          null
+          
+        env:
+        - name: CONSUL_AGENT_MODE
+          value: "client"
+        - name: CONSUL_RETRY_JOIN_ADDRESS
+          value: "my-release-consul-0.my-release-consul.default.svc"
+        - name: CONSUL_DISABLE_KEYRING_FILE
+          value: "true"
+        - name: CONSUL_DATACENTER
+          value: "dc1"
+        - name: CONSUL_UI
+          value: "true"
+        - name: CONSUL_BOOTSTRAP_EXPECT
+          value: "0"
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - consul
+              - leave
+        volumeMounts:       
+        - name: cache-volume
+          mountPath: /bitnami/consul/data
+        #- name: consul-ds-config-volume
+        #  mountPath: /opt/bitnami/consul/conf/
+      volumes:
+      - name: cache-volume
+        emptyDir: {}
+      - name: consul-ds-config-volume
+        configMap:
+          name: consul-ds-config
