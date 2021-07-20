@@ -33,6 +33,6 @@ dig +noall +answer *.redis-cluster-ss.default.svc.cluster.local \
 ```
 
 
-* https://github.com/dotbalo/k8s
-* https://hub.helm.sh/charts/stable/redis
-* https://adolphor.com/blog/2017/03/23/redis-cluster-node-manager.html
+* <https://github.com/dotbalo/k8s>
+* <https://hub.helm.sh/charts/stable/redis>
+* <https://adolphor.com/blog/2017/03/23/redis-cluster-node-manager.html>
