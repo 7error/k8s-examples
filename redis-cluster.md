@@ -13,7 +13,7 @@ or
 kubectl run -it --rm --restart=Never \
 --image=dotbalo/redis-trib:4.0.10 pod-$RANDOM \
 -- redis-trib.rb create --replicas 1 \
-$(kubectl run -it --rm --restart=Never --image=7error/kkkbox pod-$RANDOM --quiet -- /bin/sh -c "dig +short *.redis-cluster-ss.default.svc.cluster.local |awk 'BEGIN {ORS=\":6379 \"} {print}'");
+$(kubectl run -it --rm --restart=Never --image=kyokuheki/nettools pod-$RANDOM --quiet -- /bin/sh -c "dig +short *.redis-cluster-ss.default.svc.cluster.local |awk 'BEGIN {ORS=\":6379 \"} {print}'");
 
 
 kubectl run -it --rm --restart=Never \
@@ -26,7 +26,7 @@ kubectl run -it --rm --restart=Never \
 
 
 kubectl run -it --rm --restart=Never \
---image=7error/kkkbox pod-$RANDOM \
+--image=kyokuheki/nettools pod-$RANDOM \
 -- /bin/sh -c 'sleep 3s; \
 dig +noall +answer *.redis-cluster-ss.default.svc.cluster.local \
 && nping --tcp-connect -c1 -H -p 6379 redis-cluster-ss-0.redis-cluster-ss.default.svc.cluster.local';
