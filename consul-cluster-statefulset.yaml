@@ -1,5 +1,5 @@
 ---
-apiVersion: policy/v1beta1
+apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: "my-release-consul-pdb"
@@ -71,7 +71,7 @@ spec:
     release: "my-release"
     heritage: "Tiller"
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: "my-release-consul"
@@ -116,7 +116,7 @@ spec:
       containers:
       - name: consul
         #image: "dockerhub.azk8s.cn/bitnami/consul:1.7.1"
-        image: "bitnami/consul:1.7.1"
+        image: "docker.io/bitnami/consul:1.7.1"
         imagePullPolicy: "IfNotPresent"
         ports:
         - name: http
