@@ -7,7 +7,6 @@ or
 
 curl -fsSL https://raw.githubusercontent.com/7error/k8s-examples/master/yaml/redis-single.yaml \
 | sed -e "s/n32.dev/yournode/g" \
-| sed -e "s/release11/my-release/g" \
 | kubectl apply -f -
 
 kubectl get cm,svc,ep,po -l app=redis -l release=release11
