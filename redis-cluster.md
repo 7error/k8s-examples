@@ -1,5 +1,5 @@
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/7error/watch/master/redis-cluster.yaml
+kubectl apply -f https://raw.githubusercontent.com/7error/k8s-examples/master/yaml/redis-cluster.yaml
 
 kubectl get sts,pod,svc -o wide -l app=redis-cluster-ss
 

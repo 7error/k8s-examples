@@ -1,11 +1,11 @@
 
 ```bash
 # simple use nodeSelector and hostPath
-kubectl apply -f https://raw.githubusercontent.com/7error/watch/master/redis-single.yaml
+kubectl apply -f https://raw.githubusercontent.com/7error/k8s-examples/master/yaml/redis-single.yaml
 
 or
 
-curl -fsSL https://raw.githubusercontent.com/7error/watch/master/redis-single.yaml \
+curl -fsSL https://raw.githubusercontent.com/7error/k8s-examples/master/yaml/redis-single.yaml \
 | sed -e "s/n32.dev/yournode/g" \
 | sed -e "s/release11/my-release/g" \
 | kubectl apply -f -

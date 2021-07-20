@@ -1,11 +1,11 @@
 ```bash
 # apply server
-kubectl apply -f https://raw.githubusercontent.com/7error/watch/master/consul-cluster-statefulset.yaml
+kubectl apply -f https://raw.githubusercontent.com/7error/k8s-examples/master/yaml/consul-cluster-statefulset.yaml
 
 kubectl get sts,svc,pod,cm,ep -l app=consul -o wide
 
 # apply client
-kubectl apply -f https://raw.githubusercontent.com/7error/watch/master/consul-cluster-daemonset.yaml
+kubectl apply -f https://raw.githubusercontent.com/7error/k8s-examples/master/yaml/consul-cluster-daemonset.yaml
 
 kubectl get ds,pod -l app=consul-ds -o wide
 

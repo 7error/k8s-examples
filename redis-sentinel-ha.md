@@ -1,5 +1,5 @@
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/7error/watch/master/redis-sentinel-ha.yaml
+kubectl apply -f https://raw.githubusercontent.com/7error/k8s-examples/master/yaml/redis-sentinel-ha.yaml
 
 kubectl run -it --rm  --image=redis:5.0.6-alpine redis-$RANDOM -- sh
 
