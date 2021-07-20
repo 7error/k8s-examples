@@ -10,7 +10,7 @@ kubectl apply -f https://raw.githubusercontent.com/7error/watch/master/consul-cl
 kubectl get ds,pod -l app=consul-ds -o wide
 
 
-kubectl run -it --rm --restart=Never --generator=run-pod/v1 --image=praqma/network-multitool pod-$RANDOM -- /bin/sh -c 'dig +noall +answer *.my-release-consul.default.svc.cluster.local'
+kubectl run -it --rm --restart=Never --image=praqma/network-multitool pod-$RANDOM -- /bin/sh -c 'dig +noall +answer *.my-release-consul.default.svc.cluster.local'
 
 
 kubectl -n default logs my-release-consul-0

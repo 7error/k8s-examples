@@ -6,7 +6,7 @@ kubectl logs zk-0
 kubectl exec zk-1 -- sh -c 'cat /var/lib/zookeeper/data/myid'
 kubectl exec zk-0 -- sh -c 'cat /opt/zookeeper/conf/zoo.cfg'
 
-kubectl run -it --rm --generator=run-pod/v1 --image=busybox:1.28.3 busy -- /bin/sh -c "sleep 2s;echo conf | nc zk-0.zk-hs.default.svc.cluster.local 2181"
+kubectl run -it --rm --image=busybox:1.28.3 busy -- /bin/sh -c "sleep 2s;echo conf | nc zk-0.zk-hs.default.svc.cluster.local 2181"
 
 # ref https://kubernetes.io/docs/tutorials/stateful-application/zookeeper/
 
