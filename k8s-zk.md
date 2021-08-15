@@ -1,5 +1,5 @@
 ```
-kubectl apply -f https://raw.githubusercontent.com/7error/k8s-examples/master/yaml/k8s.yaml
+kubectl apply -f https://raw.githubusercontent.com/7error/k8s-examples/master/yaml/k8s-zk.yaml
 kubectl get pod -o wide -lapp=zk
 kubectl get svc -o wide -lapp=zk
 kubectl logs zk-0
