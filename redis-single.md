@@ -1,6 +1,6 @@
 
 ```bash
-# simple use nodeSelector and hostPath
+
 kubectl apply -f https://raw.githubusercontent.com/7error/k8s-examples/master/yaml/redis-single.yaml
 
 kubectl get cm,svc,ep,po -l app.kubernetes.io/name=redis -l app.kubernetes.io/instance=release11
